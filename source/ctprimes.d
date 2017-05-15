@@ -16,7 +16,25 @@ import std.traits : isIntegral;
 */
 public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < length)
 {
-    enum T[length] ctPrimes = () {  }();
+    enum T[length] ctPrimes = () {
+        T[] result = [];
+        T n = 2;
+        while (result.length < length)
+        {
+            bool isprime = () {
+                foreach (i; 2 .. n)
+                {
+                    if (n % i == 0)
+                        return true;
+                }
+                return false;
+            }();
+            if (isprime)
+                result ~= n;
+            n++;
+        }
+        return result;
+    }();
 }
 
 ///
