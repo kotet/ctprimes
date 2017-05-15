@@ -28,22 +28,19 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
     static assert(!__traits(compiles, {
             ctPrimes!runtimevalue; // Error: variable runtimevalue cannot be read at compile time
         }));
-}
-///
-@nogc @safe unittest
-{
+
     static assert(__traits(compiles, {
-            ctPrimes!(5, byte);
-            ctPrimes!(5, ubyte);
-            ctPrimes!(5, short);
-            ctPrimes!(5, int);
-            ctPrimes!(5, long);
+            auto a = ctPrimes!(5, byte);
+            auto b = ctPrimes!(5, ubyte);
+            auto c = ctPrimes!(5, short);
+            auto d = ctPrimes!(5, int);
+            auto e = ctPrimes!(5, long);
         }));
 
     static assert(!__traits(compiles, {
-            ctPrimes!(5, bool);
-            ctPrimes!(5, char);
-            ctPrimes!(5, double);
+            auto a = ctPrimes!(5, bool);
+            auto b = ctPrimes!(5, char);
+            auto c = ctPrimes!(5, double);
         }));
 
     auto primes1 = ctPrimes!(10);
@@ -52,9 +49,6 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
 
     auto primes2 = ctPrimes!1;
     assert(primes2 == [2]);
-
-    auto primes3 = ctPrimes!0;
-    assert(primes3 == []);
 }
 
 /**
@@ -77,22 +71,19 @@ public template ctPrimesLessThan(N) if (isIntegral!(typeof(N)))
     static assert(!__traits(compiles, {
             ctPrimes!runtimevalue; // Error: variable runtimevalue cannot be read at compile time
         }));
-}
 
-@nogc @safe unittest
-{
     static assert(__traits(compiles, {
-            ctPrimesLessThan!(cast(byte) 5);
-            ctPrimesLessThan!(cast(ubyte) 5);
-            ctPrimesLessThan!(cast(short) 5);
-            ctPrimesLessThan!(cast(int) 5);
-            ctPrimesLessThan!(cast(long) 5);
+            auto a = ctPrimesLessThan!(cast(byte) 5);
+            auto b = ctPrimesLessThan!(cast(ubyte) 5);
+            auto c = ctPrimesLessThan!(cast(short) 5);
+            auto d = ctPrimesLessThan!(cast(int) 5);
+            auto e = ctPrimesLessThan!(cast(long) 5);
         }));
 
     static assert(!__traits(compiles, {
-            ctPrimesLessThan!(true);
-            ctPrimesLessThan!('a');
-            ctPrimesLessThan!(5f);
+            auto a = ctPrimesLessThan!(true);
+            auto b = ctPrimesLessThan!('a');
+            auto c = ctPrimesLessThan!(5f);
         }));
 
     auto primes1 = ctPrimesLessThan!(10);
