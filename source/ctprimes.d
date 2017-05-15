@@ -105,7 +105,7 @@ public template ctPrimesLessThan(N) if (isIntegral!(typeof(N)))
         }));
 
     auto primes1 = ctPrimesLessThan!(10);
-    static assert(is(typeof(primes1) == size_t[]));
+    static assert(is(typeof(primes1) == typeof([1])));
     assert(primes1 == [2, 3, 5, 7]);
 
     auto primes2 = ctPrimesLessThan!2;
