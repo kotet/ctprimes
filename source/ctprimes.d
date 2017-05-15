@@ -25,9 +25,9 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
                 foreach (i; 2 .. n)
                 {
                     if (n % i == 0)
-                        return true;
+                        return false;
                 }
-                return false;
+                return true;
             }();
             if (isprime)
                 result ~= n;
