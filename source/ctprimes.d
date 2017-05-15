@@ -76,9 +76,28 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
     Params:
         N = All elements of result are less than this value
 */
-public template ctPrimesLessThan(N) if (isIntegral!(typeof(N)))
+public template ctPrimesLessThan(alias N) if (isIntegral!(typeof(N)))
 {
-    enum typeof(N)[] ctPrimesLessThan = () {  }();
+    enum typeof(N)[] ctPrimesLessThan = () {
+        typeof(N)[] result = [];
+        typeof(N) n = 2;
+        while (true)
+        {
+            if (N <= n)
+                return result;
+            bool isprime = () {
+                foreach (i; 2 .. n)
+                {
+                    if (n % i == 0)
+                        return false;
+                }
+                return true;
+            }();
+            if (isprime)
+                result ~= n;
+            n++;
+        }
+    }();
 }
 
 @safe unittest
