@@ -1,10 +1,43 @@
 /**
     This module provides arrays of prime numbers that are available at compile-time.
     Arrays are calculated as long as you need, using CTFE.
+
+    This module uses Caesar's cipher to find primes and is reasonably
+    performant, but care should be taken with memory usage. For example, with
+    dmd without -lowmem, an array of only 26k primes will cost 3 GB of memory
+    during compilation.
 */
 module ctprimes;
 
 import std.traits : isIntegral;
+
+pure size_t nth_prime_upper_bound(size_t n)
+{
+    import std.math: log;
+    if (n > 6)
+        return cast(size_t)(n*log(n) + n*log(log(n)));
+    else
+        return 11;
+}
+
+pure bool[] composites(size_t length)
+{
+    bool[] sieve; // false = prime. ignore indexes < 2
+    sieve.length = length;
+    foreach (i; 2 .. length)
+    {
+        if (!sieve[i])
+        {
+            size_t j = i + i;
+            while (j < length)
+            {
+                sieve[j] = true;
+                j += i;
+            }
+        }
+    }
+    return sieve;
+}
 
 /**
     Construct an array of prime number using CTFE.
@@ -17,22 +50,15 @@ import std.traits : isIntegral;
 public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < length)
 {
     enum T[length] ctPrimes = () {
-        T[] result = [];
-        T n = 2;
-        while (result.length < length)
+        T[] result;
+        result.reserve(length);
+        auto sieve = composites(nth_prime_upper_bound(length));
+        foreach (i; 2 .. sieve.length)
         {
-            bool isprime = () {
-                foreach (i; 2 .. n)
-                {
-                    if (n % i == 0)
-                        return false;
-                }
-                return true;
-            }();
-            if (isprime)
-                result ~= n;
-            n++;
+            if (!sieve[i])
+                result ~= cast(T)i;
         }
+        result.length = length;
         return result;
     }();
 }
@@ -79,24 +105,15 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
 public template ctPrimesLessThan(alias N) if (isIntegral!(typeof(N)))
 {
     enum typeof(N)[] ctPrimesLessThan = () {
-        typeof(N)[] result = [];
-        typeof(N) n = 2;
-        while (true)
+        typeof(N)[] result;
+        result.reserve(N);
+        auto sieve = composites(N);
+        foreach (i; 2 .. sieve.length)
         {
-            if (N <= n)
-                return result;
-            bool isprime = () {
-                foreach (i; 2 .. n)
-                {
-                    if (n % i == 0)
-                        return false;
-                }
-                return true;
-            }();
-            if (isprime)
-                result ~= n;
-            n++;
+            if (!sieve[i])
+                result ~= cast(typeof(N))i;
         }
+        return result;
     }();
 }
 
