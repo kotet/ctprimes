@@ -2,10 +2,10 @@
     This module provides arrays of prime numbers that are available at compile-time.
     Arrays are calculated as long as you need, using CTFE.
 
-    This module uses Caesar's cipher to find primes and is reasonably
-    performant, but care should be taken with memory usage. For example, with
-    dmd without -lowmem, an array of only 26k primes will cost 3 GB of memory
-    during compilation.
+    This module uses the Sieve of Eratosthenes to find primes and so is
+    reasonably performant, but care should be taken with memory usage. For
+    example, with dmd without -lowmem, an array of only 26k primes will cost 3
+    GB of memory during compilation.
 */
 module ctprimes;
 
