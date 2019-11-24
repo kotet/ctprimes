@@ -13,9 +13,10 @@ import std.traits : isIntegral;
 
 pure size_t nth_prime_upper_bound(size_t n)
 {
-    import std.math: log;
+    import std.math : log;
+
     if (n > 6)
-        return cast(size_t)(n*log(n) + n*log(log(n)));
+        return cast(size_t)(n * log(n) + n * log(log(n)));
     else
         return 11;
 }
@@ -56,7 +57,7 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
         foreach (i; 2 .. sieve.length)
         {
             if (!sieve[i])
-                result ~= cast(T)i;
+                result ~= cast(T) i;
         }
         result.length = length;
         return result;
@@ -111,7 +112,7 @@ public template ctPrimesLessThan(alias N) if (isIntegral!(typeof(N)))
         foreach (i; 2 .. sieve.length)
         {
             if (!sieve[i])
-                result ~= cast(typeof(N))i;
+                result ~= cast(typeof(N)) i;
         }
         return result;
     }();
