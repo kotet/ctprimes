@@ -13,9 +13,10 @@ import std.traits : isIntegral;
 
 pure size_t nth_prime_upper_bound(size_t n)
 {
-    import std.math: log;
+    import std.math : log;
+
     if (n > 6)
-        return cast(size_t)(n*log(n) + n*log(log(n)));
+        return cast(size_t)(n * log(n) + n * log(log(n)));
     else
         return 11;
 }
@@ -56,7 +57,7 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
         foreach (i; 2 .. sieve.length)
         {
             if (!sieve[i])
-                result ~= cast(T)i;
+                result ~= cast(T) i;
         }
         result.length = length;
         return result;
@@ -91,8 +92,11 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
     static assert(is(typeof(primes1) == size_t[10]));
     assert(primes1 == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
 
-    auto primes2 = ctPrimes!1;
+    auto primes2 = ctPrimes!(1);
     assert(primes2 == [2]);
+
+    auto primes3 = ctPrimes!(10_000);
+    assert(primes3[$ - 1] == 104_729);
 }
 
 /**
@@ -111,7 +115,7 @@ public template ctPrimesLessThan(alias N) if (isIntegral!(typeof(N)))
         foreach (i; 2 .. sieve.length)
         {
             if (!sieve[i])
-                result ~= cast(typeof(N))i;
+                result ~= cast(typeof(N)) i;
         }
         return result;
     }();
@@ -144,9 +148,12 @@ public template ctPrimesLessThan(alias N) if (isIntegral!(typeof(N)))
     static assert(is(typeof(primes1) == typeof([1])));
     assert(primes1 == [2, 3, 5, 7]);
 
-    auto primes2 = ctPrimesLessThan!2;
+    auto primes2 = ctPrimesLessThan!(2);
     assert(primes2 == []);
 
-    auto primes3 = ctPrimesLessThan!0;
+    auto primes3 = ctPrimesLessThan!(0);
     assert(primes3 == []);
+
+    auto primes4 = ctPrimesLessThan!(104_730);
+    assert(primes4[$ - 1] == 104_729);
 }
