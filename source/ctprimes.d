@@ -92,8 +92,11 @@ public template ctPrimes(size_t length, T = size_t) if (isIntegral!T && 0 < leng
     static assert(is(typeof(primes1) == size_t[10]));
     assert(primes1 == [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
 
-    auto primes2 = ctPrimes!1;
+    auto primes2 = ctPrimes!(1);
     assert(primes2 == [2]);
+
+    auto primes3 = ctPrimes!(10_000);
+    assert(primes3[$ - 1] == 104_729);
 }
 
 /**
@@ -145,9 +148,12 @@ public template ctPrimesLessThan(alias N) if (isIntegral!(typeof(N)))
     static assert(is(typeof(primes1) == typeof([1])));
     assert(primes1 == [2, 3, 5, 7]);
 
-    auto primes2 = ctPrimesLessThan!2;
+    auto primes2 = ctPrimesLessThan!(2);
     assert(primes2 == []);
 
-    auto primes3 = ctPrimesLessThan!0;
+    auto primes3 = ctPrimesLessThan!(0);
     assert(primes3 == []);
+
+    auto primes4 = ctPrimesLessThan!(104_730);
+    assert(primes4[$ - 1] == 104_729);
 }
