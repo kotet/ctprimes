@@ -16,7 +16,7 @@ pure size_t nth_prime_upper_bound(size_t n)
     import std.math : log;
 
     if (n > 6)
-        return cast(size_t)(n * log(n) + n * log(log(n)));
+        return cast(size_t)(n * log(cast(float)n) + n * log(log(cast(float)n)));
     else
         return 11;
 }
